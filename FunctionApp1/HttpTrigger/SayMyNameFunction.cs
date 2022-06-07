@@ -12,7 +12,7 @@ namespace FunctionApp.HttpTrigger
 {
     public static class SayMyNameFunction
     {
-        private static int counter = 0;
+        public static int counter = 0;
 
         // http://localhost:7071/api/SayMyNameFunction?name=Geiser
         [FunctionName("SayMyNameFunction")]
