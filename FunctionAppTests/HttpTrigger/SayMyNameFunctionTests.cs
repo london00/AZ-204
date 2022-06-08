@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using Moq;
+using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,15 +15,13 @@ namespace FunctionApp.HttpTrigger.Tests
     public class SayMyNameFunctionTests
     {
         private DefaultHttpRequest request;
-        private Mock<ILogger> loggerMock;
-        //private ILogger logger;
+        private ILogger logger;
 
         [SetUp]
         public void SetUp()
         {
             this.request = new DefaultHttpRequest(new DefaultHttpContext());
-            this.loggerMock = new Mock<ILogger>();
-            //this.logger = NullLoggerFactory.Instance.CreateLogger("Dummy Logger");
+            this.logger = Substitute.For<ILogger>();
         }
 
         [TestCase("abc")]
@@ -38,7 +36,7 @@ namespace FunctionApp.HttpTrigger.Tests
             );
 
             // Act
-            var response = await SayMyNameFunction.Run(request, loggerMock.Object);
+            var response = await SayMyNameFunction.Run(request, logger);
 
             // Assert
             response.Should().BeAssignableTo<OkObjectResult>();
@@ -46,7 +44,6 @@ namespace FunctionApp.HttpTrigger.Tests
             OkObjectResult okResponse = (OkObjectResult)response;
 
             okResponse.Value.ToString().Should().Be($"Hello, { queryStringValue }. This HTTP triggered function executed successfully. Counter: { SayMyNameFunction.counter }");
-            loggerMock.Verify(x => x.LogInformation(It.Is<string>("C# HTTP trigger function processed a request.", EqualityComparer<string>.Default)), Times.Once);
         }
     }
 }
