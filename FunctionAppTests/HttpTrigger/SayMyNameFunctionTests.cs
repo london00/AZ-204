@@ -1,15 +1,13 @@
-﻿using NUnit.Framework;
-using FunctionApp.HttpTrigger;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http.Internal;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
-using FluentAssertions;
-using NSubstitute;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using Moq;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FunctionApp.HttpTrigger.Tests
 {
@@ -17,13 +15,15 @@ namespace FunctionApp.HttpTrigger.Tests
     public class SayMyNameFunctionTests
     {
         private DefaultHttpRequest request;
-        private ILogger logger;
+        private Mock<ILogger> loggerMock;
+        //private ILogger logger;
 
         [SetUp]
         public void SetUp()
         {
             this.request = new DefaultHttpRequest(new DefaultHttpContext());
-            this.logger = NullLoggerFactory.Instance.CreateLogger("Dummy Logger");
+            this.loggerMock = new Mock<ILogger>();
+            //this.logger = NullLoggerFactory.Instance.CreateLogger("Dummy Logger");
         }
 
         [TestCase("abc")]
@@ -38,7 +38,7 @@ namespace FunctionApp.HttpTrigger.Tests
             );
 
             // Act
-            var response = await SayMyNameFunction.Run(request, logger);
+            var response = await SayMyNameFunction.Run(request, loggerMock.Object);
 
             // Assert
             response.Should().BeAssignableTo<OkObjectResult>();
@@ -46,6 +46,7 @@ namespace FunctionApp.HttpTrigger.Tests
             OkObjectResult okResponse = (OkObjectResult)response;
 
             okResponse.Value.ToString().Should().Be($"Hello, { queryStringValue }. This HTTP triggered function executed successfully. Counter: { SayMyNameFunction.counter }");
+            loggerMock.Verify(x => x.LogInformation(It.Is<string>("C# HTTP trigger function processed a request.", EqualityComparer<string>.Default)), Times.Once);
         }
     }
 }
