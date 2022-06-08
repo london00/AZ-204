@@ -20,7 +20,7 @@ namespace FunctionApp.HttpTrigger
         {
             log.LogInformation("C# HTTP trigger function processed a GitHub request.");
 
-            await GitHubWebHubHelper.CompareSignatureAsync(req, log);
+            await GitHubWebHubHelper.CompareSignatureAsync(req);
 
             log.LogInformation("x-github-event: " + req.Headers["x-github-event"].ToString());
 
@@ -36,29 +36,30 @@ namespace FunctionApp.HttpTrigger
     public static class GitHubWebHubHelper
     {
         private const string MY_PRIVATE_KEY = "mykey";
+        private const string HEX_FORMAT_2DIGITS = "{0:x2}";
 
-        public static async Task CompareSignatureAsync(HttpRequest req, ILogger log)
+        public static async Task CompareSignatureAsync(HttpRequest req)
         {
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+            #region Encode HMACSHA1
+
             ASCIIEncoding encoding = new ASCIIEncoding();
 
             byte[] keyByte = encoding.GetBytes(MY_PRIVATE_KEY);
 
             HMACSHA1 hmacsha1 = new HMACSHA1(keyByte);
 
-            var gitHubSignature = req.Headers["x-hub-signature"].ToString();
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-
             var shaSignature = hmacsha1.ComputeHash(encoding.GetBytes(requestBody));
 
-            if (string.Equals(gitHubSignature, "sha1=" + ToHexString(shaSignature), StringComparison.OrdinalIgnoreCase))
-            {
-                log.LogInformation("GitHub WebHook key: Valid");
-            }
-            else
-            {
-                log.LogInformation("GitHub WebHook key: Invalid");
+            #endregion
 
+            var hashedBody = "sha1=" + ToHexString(shaSignature);
+
+            var gitHubSignature = req.Headers["x-hub-signature"].ToString();
+
+            if (string.Equals(gitHubSignature, hashedBody, StringComparison.OrdinalIgnoreCase))
+            {
                 throw new CryptographicUnexpectedOperationException("GitHub WebHook key is not valid.");
             }
         }
@@ -66,9 +67,10 @@ namespace FunctionApp.HttpTrigger
         private static string ToHexString(byte[] bytes)
         {
             var builder = new StringBuilder(bytes.Length * 2);
+
             foreach (byte b in bytes)
             {
-                builder.AppendFormat("{0:x2}", b);
+                builder.AppendFormat(HEX_FORMAT_2DIGITS, b);
             }
 
             return builder.ToString();
