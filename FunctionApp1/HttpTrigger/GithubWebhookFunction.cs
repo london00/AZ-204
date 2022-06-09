@@ -60,7 +60,7 @@ namespace FunctionApp.HttpTrigger
 
             if (string.Equals(gitHubSignature, hashedBody, StringComparison.OrdinalIgnoreCase))
             {
-                throw new CryptographicUnexpectedOperationException("GitHub WebHook key is not valid.");
+                throw new UnauthorizedAccessException("GitHub WebHook key is not valid.");
             }
         }
 
