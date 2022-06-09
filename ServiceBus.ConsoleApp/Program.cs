@@ -16,13 +16,18 @@ namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
         {
             var host = CreateHostBuilder(args).Build();
 
+            await EerviceBusPOC(host);
+
+            await host.WaitForShutdownAsync();
+        }
+
+        private static async Task EerviceBusPOC(IHost host)
+        {
             var serviceBusQueueExample = host.Services.GetService<IServiceBusQueueExample>();
             await serviceBusQueueExample.Execute();
 
             var serviceBusTopicExample = host.Services.GetService<IServiceBusTopicExample>();
             await serviceBusTopicExample.Execute();
-
-            await host.WaitForShutdownAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)
