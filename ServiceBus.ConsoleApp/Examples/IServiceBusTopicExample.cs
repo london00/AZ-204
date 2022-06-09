@@ -1,5 +1,5 @@
 ﻿
-namespace ServiceBus.ConsoleApp
+namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
 {
     public interface IServiceBusTopicExample
     {

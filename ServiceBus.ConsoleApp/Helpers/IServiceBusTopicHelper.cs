@@ -1,6 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 
-namespace ServiceBus.ConsoleApp
+namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
 {
     public interface IServiceBusTopicHelper
     {

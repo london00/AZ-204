@@ -1,7 +1,7 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Configuration;
 
-namespace ServiceBus.ConsoleApp
+namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
 {
     public class ServiceBusTopicHelper : IServiceBusTopicHelper
     {
