@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MessageBasedCommunication.ConsoleApp.ServiceBus.Examples;
+using MessageBasedCommunication.ConsoleApp.ServiceBus.Helpers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
+namespace MessageBasedCommunication.ConsoleApp
 {
     public class Program
     {

@@ -4,12 +4,12 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
-namespace FunctionApp
+namespace FunctionApp.BlobTrigger
 {
     public class ReadBlobFileFunction
     {
         [FunctionName("Function")]
-        public void Run([BlobTrigger("photos/{name}", Connection = "AzureWebJobsStorage")]Stream myBlob, string name, ILogger log)
+        public void Run([BlobTrigger("photos/{name}", Connection = "AzureWebJobsStorage")] Stream myBlob, string name, ILogger log)
         {
             log.LogInformation($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {myBlob.Length} Bytes");
         }

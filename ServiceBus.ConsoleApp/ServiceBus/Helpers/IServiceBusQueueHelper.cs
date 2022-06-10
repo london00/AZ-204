@@ -1,6 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 
-namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
+namespace MessageBasedCommunication.ConsoleApp.ServiceBus.Helpers
 {
     public interface IServiceBusQueueHelper
     {

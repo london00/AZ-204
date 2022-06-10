@@ -1,4 +1,4 @@
-﻿namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
+﻿namespace MessageBasedCommunication.ConsoleApp.ServiceBus.Examples
 {
     public interface IServiceBusQueueExample
     {

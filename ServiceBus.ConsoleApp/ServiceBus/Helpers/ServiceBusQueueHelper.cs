@@ -1,7 +1,7 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Configuration;
 
-namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
+namespace MessageBasedCommunication.ConsoleApp.ServiceBus.Helpers
 {
     public class ServiceBusQueueHelper : IServiceBusQueueHelper
     {
@@ -20,10 +20,10 @@ namespace MessageBasedCommunication.ConsoleApp.ConsoleApp
             var client = new ServiceBusClient(this.configuration.GetConnectionString("ServiceBus"));
 
             // Create a ServiceBusSender object by invoking the CreateSender method on the ServiceBusClient object, and specifying the queue name. 
-            this.sender = client.CreateSender(QUEUE_NAME);
+            sender = client.CreateSender(QUEUE_NAME);
 
             // Create a ServiceBusProcessor for the queue.
-            this.processor = client.CreateProcessor(QUEUE_NAME, new ServiceBusProcessorOptions() { AutoCompleteMessages = true });   
+            processor = client.CreateProcessor(QUEUE_NAME, new ServiceBusProcessorOptions() { AutoCompleteMessages = true });
         }
 
         public async Task SendAsync(object body)
