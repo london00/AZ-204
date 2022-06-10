@@ -1,11 +1,9 @@
-﻿
-using Azure.Storage.Queues;
-
-namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
+﻿namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
 {
     public interface IStorageQueueHelper
     {
-        Task<T> ReceiveMessageAsync<T>();
-        Task SendMessageAsync<T>(T body);
+        Task MessageProccessedAsync<T>(T messageBody) where T : QueueMessageBase;
+        Task<T> ReceiveMessageAsync<T>() where T: QueueMessageBase;
+        Task SendMessageAsync<T>(T body) where T : QueueMessageBase;
     }
 }

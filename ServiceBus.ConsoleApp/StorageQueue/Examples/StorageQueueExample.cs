@@ -18,10 +18,27 @@ namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Examples
                 Name = "Geiser: " + Guid.NewGuid()
             });
 
-            var person = await storageQueueHelper.ReceiveMessageAsync<PersonMessage>();
+            bool pendingMessages = false;
+
+            do
+            {
+                var person = await storageQueueHelper.ReceiveMessageAsync<PersonMessage>();
+
+                if (person is not null)
+                {
+                    await storageQueueHelper.MessageProccessedAsync(person);
+
+                    pendingMessages = true;
+                }
+                else
+                {
+                    pendingMessages = false;
+                }
+            }
+            while (pendingMessages);
         }
 
-        public class PersonMessage
+        public class PersonMessage : QueueMessageBase
         {
             public string Name { get; set; }
         }
