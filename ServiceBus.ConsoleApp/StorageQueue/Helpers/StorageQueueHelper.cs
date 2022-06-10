@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Queues;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
 {
@@ -36,7 +37,7 @@ namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
             }
 
             logger.LogInformation("Message received");
-            logger.LogInformation(Newtonsoft.Json.JsonConvert.SerializeObject(message.Value));
+            logger.LogInformation(JsonConvert.SerializeObject(message.Value));
 
             if (message.Value is null)
             {
@@ -44,7 +45,7 @@ namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
             }
             else
             {
-                var messageBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(message.Value.Body.ToString());
+                var messageBody = message.Value.Body.ToObjectFromJson<T>();
 
                 messageBody.MessageReference = new QueueMessageBase.MessageReferenceDto
                 {
@@ -73,7 +74,7 @@ namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
         {
             var queueClient = await this.Init<T>();
 
-            var result = await queueClient.SendMessageAsync(Newtonsoft.Json.JsonConvert.SerializeObject(messageBody));
+            var result = await queueClient.SendMessageAsync(JsonConvert.SerializeObject(messageBody));
 
             messageBody.MessageReference = new QueueMessageBase.MessageReferenceDto
             {
@@ -82,7 +83,7 @@ namespace MessageBasedCommunication.ConsoleApp.StorageQueue.Helpers
             };
 
             logger.LogInformation("Message sent");
-            logger.LogInformation(Newtonsoft.Json.JsonConvert.SerializeObject(result));
+            logger.LogInformation(JsonConvert.SerializeObject(result));
         }
     }
 }
