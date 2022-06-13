@@ -1,3 +1,4 @@
+using FunctionApp.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -18,7 +19,7 @@ namespace FunctionApp.HttpTrigger
             [CosmosDB("School", "Logs", ConnectionStringSetting = "AzureCosmosDb")] out LogAggregate logAggregate,
             [Bind("id")] int id,
             ILogger log)
-        
+
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -28,7 +29,7 @@ namespace FunctionApp.HttpTrigger
 
             logAggregate = new LogAggregate { Id = Guid.NewGuid().ToString(), Message = responseMessage };
 
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult(logAggregate);
         }
 
         private static PersonAggregate GetPerson(IEnumerable<PersonAggregate> client, int id)
@@ -37,17 +38,5 @@ namespace FunctionApp.HttpTrigger
 
             return person;
         }
-    }
-
-    public class PersonAggregate
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class LogAggregate 
-    {
-        public string Id { get; set; }
-        public string Message { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace FunctionApp
@@ -10,24 +11,25 @@ namespace FunctionApp
     // inherit FunctionsStartup
     public class Startup : FunctionsStartup
     {
-        // override configure method
-        public override void Configure(IFunctionsHostBuilder builder)
+        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
-            var config = new ConfigurationBuilder()
-               .SetBasePath(Environment.CurrentDirectory)
-               .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-               .AddEnvironmentVariables();
+            var context = builder.GetContext();
 
+            var configBuilder = new ConfigurationBuilder()
+                .AddJsonFile(Path.Combine(context.ApplicationRootPath, "local.settings.json"), optional: true, reloadOnChange: false)
+                .AddEnvironmentVariables();
 
             // register your other services
             if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
             {
-                config.AddUserSecrets<Startup>(true);
+                configBuilder.AddUserSecrets<Startup>(true);
             }
+        }
 
-            var settings = config.Build();
-
-            builder.Services.AddSingleton<IConfiguration>(settings);
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            builder.Services.AddHttpClient();
+            builder.Services.AddLogging();
         }
     }
 }

@@ -10,13 +10,13 @@ using Newtonsoft.Json;
 
 namespace FunctionApp.HttpTrigger
 {
-    public static class SayMyNameFunction
+    public class SayMyNameFunction
     {
         public static int counter = 0;
-
+        
         // http://localhost:7071/api/SayMyNameFunction?name=Geiser
         [FunctionName("SayMyNameFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
