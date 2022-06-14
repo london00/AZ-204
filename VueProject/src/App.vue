@@ -1,18 +1,19 @@
 <template>
     <MainComponent msg="My fist Vue.js App" />
-    <HttpPolingExampleComponent />
+    <HttpSignalRExampleComponent />
 </template>
 
 <script>
     import MainComponent from './components/MainComponent.vue'
-    import HttpPolingExampleComponent from './components/HttpPolingExampleComponent.vue'
+    //import HttpPolingExampleComponent from './components/HttpPolingExampleComponent.vue'
+    import HttpSignalRExampleComponent from './components/HttpSignalRExampleComponent.vue'
 
     export default {
         name: 'App',
         components: {
             MainComponent,
-            HttpPolingExampleComponent
-        }
+            HttpSignalRExampleComponent
+        },
     }
 </script>
 

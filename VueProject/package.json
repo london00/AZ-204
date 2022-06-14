@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@dreamonkey/vue-signalr": "^1.0.1",
+    "@microsoft/signalr": "^6.0.6",
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "jest": "^28.1.1",

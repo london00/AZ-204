@@ -5,9 +5,31 @@
     <UserSecretsId>42a156f1-8459-4c76-b95e-87fa779ee0ba</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="BlobTrigger\**" />
+    <Compile Remove="CosmosTrigger\**" />
+    <Compile Remove="DurableFunctions\**" />
+    <Compile Remove="TimerTrigger\**" />
+    <EmbeddedResource Remove="BlobTrigger\**" />
+    <EmbeddedResource Remove="CosmosTrigger\**" />
+    <EmbeddedResource Remove="DurableFunctions\**" />
+    <EmbeddedResource Remove="TimerTrigger\**" />
+    <None Remove="BlobTrigger\**" />
+    <None Remove="CosmosTrigger\**" />
+    <None Remove="DurableFunctions\**" />
+    <None Remove="TimerTrigger\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="HttpTrigger\GithubWebhookFunction.cs" />
+    <Compile Remove="HttpTrigger\HttpTriggerBindedToCosmosDbFunction.cs" />
+    <Compile Remove="HttpTrigger\HttpTriggerPoolingFunction.cs" />
+    <Compile Remove="HttpTrigger\SayMyNameFunction.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.SignalR.Management" Version="1.18.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.CosmosDB" Version="3.0.10" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.DurableTask" Version="2.6.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SignalRService" Version="1.1.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1" />

@@ -37,7 +37,7 @@ namespace FunctionAppTests.HttpTrigger
             );
 
             // Act
-            var response = await SayMyNameFunction.Run(request, logger);
+            var response = await new SayMyNameFunction().Run(request, logger);
 
             // Assert
             response.Should().BeAssignableTo<OkObjectResult>();
