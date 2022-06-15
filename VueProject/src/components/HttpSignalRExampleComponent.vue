@@ -46,7 +46,7 @@
                 const signalr = useSignalR();
 
                 //signalr.invoke('SendMessage', { message });
-                signalr.on('productOrdered', this.productOrdered);
+                signalr.on('orderCreated', this.productOrdered);
 
                 this.ready = true;
             },

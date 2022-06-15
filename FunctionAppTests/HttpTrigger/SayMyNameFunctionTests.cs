@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using FunctionApp.HttpTrigger;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -15,14 +14,14 @@ namespace FunctionAppTests.HttpTrigger
     [TestFixture()]
     public class SayMyNameFunctionTests
     {
-        private DefaultHttpRequest request;
+        private HttpRequest request;
         private ILogger logger;
 
         [SetUp]
         public void SetUp()
         {
-            request = new DefaultHttpRequest(new DefaultHttpContext());
             logger = Substitute.For<ILogger>();
+            request = Substitute.For<HttpRequest>();
         }
 
         [TestCase("abc")]
@@ -44,7 +43,7 @@ namespace FunctionAppTests.HttpTrigger
 
             OkObjectResult okResponse = (OkObjectResult)response;
 
-            okResponse.Value.ToString().Should().Be($"Hello, { queryStringValue }. This HTTP triggered function executed successfully. Counter: { SayMyNameFunction.counter }");
+            okResponse.Value.ToString().Should().Be($"Hello, {queryStringValue}. This HTTP triggered function executed successfully. Counter: {SayMyNameFunction.counter}");
         }
     }
 }

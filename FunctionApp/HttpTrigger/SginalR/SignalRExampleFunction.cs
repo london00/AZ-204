@@ -9,7 +9,7 @@ namespace FunctionApp.HttpTrigger.SginalR
 {
     public class SignalRExampleFunction
     {
-        private const string HUB_NAME = "notifications";
+        private const string HUB_NAME = "orders";
         private readonly ILogger<SignalRExampleFunction> logger;
 
         public SignalRExampleFunction(ILogger<SignalRExampleFunction> logger)
@@ -18,7 +18,7 @@ namespace FunctionApp.HttpTrigger.SginalR
         }
 
         [FunctionName("negotiate")]
-        public SignalRConnectionInfo GetOrderNotificationsSignalRInfo(
+        public SignalRConnectionInfo SignalRHandshake(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get","post", "options")] HttpRequest req,
         [SignalRConnectionInfo(HubName = HUB_NAME)] SignalRConnectionInfo connectionInfo)
         {
@@ -26,22 +26,21 @@ namespace FunctionApp.HttpTrigger.SginalR
         }
 
         [FunctionName("PlacedOrderNotification")]
-        public async Task Run(
-        [QueueTrigger("orders")] Order order,
-        [SignalR(HubName = HUB_NAME)] IAsyncCollector<SignalRMessage> signalRMessages,
-        ILogger log)
+        public async Task OrderCreatedOnQueueStorage(
+        [QueueTrigger("orders")] OrderDto order,
+        [SignalR(HubName = HUB_NAME)] IAsyncCollector<SignalRMessage> signalRMessages)
         {
-            log.LogInformation($"Sending notification for {order}");
+            this.logger.LogInformation($"Sending notification for {order}");
 
             await signalRMessages.AddAsync(
                 new SignalRMessage
                 {
-                    Target = "productOrdered",
+                    Target = "orderCreated",
                     Arguments = new[] { order }
                 });
         }
 
-        public class Order
+        public class OrderDto
         {
             public string CustomerName { get; set; }
             public string Product { get; set; }
