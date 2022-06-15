@@ -17,7 +17,7 @@ namespace FunctionApp.HttpTrigger
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "people/{id:int}")] HttpRequest req,
             [CosmosDB("School", "People", ConnectionStringSetting = "AzureCosmosDb")] IEnumerable<PersonAggregate> peopleClient,
             [CosmosDB("School", "Logs", ConnectionStringSetting = "AzureCosmosDb")] out LogAggregate logAggregate,
-            [Bind("id")] int id,
+            /*[Bind("id")] */int id,
             ILogger log)
 
         {

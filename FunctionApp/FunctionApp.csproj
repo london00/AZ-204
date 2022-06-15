@@ -5,24 +5,13 @@
     <UserSecretsId>42a156f1-8459-4c76-b95e-87fa779ee0ba</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="BlobTrigger\**" />
-    <Compile Remove="CosmosTrigger\**" />
     <Compile Remove="DurableFunctions\**" />
-    <Compile Remove="TimerTrigger\**" />
-    <EmbeddedResource Remove="BlobTrigger\**" />
-    <EmbeddedResource Remove="CosmosTrigger\**" />
     <EmbeddedResource Remove="DurableFunctions\**" />
-    <EmbeddedResource Remove="TimerTrigger\**" />
-    <None Remove="BlobTrigger\**" />
-    <None Remove="CosmosTrigger\**" />
     <None Remove="DurableFunctions\**" />
-    <None Remove="TimerTrigger\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="HttpTrigger\GithubWebhookFunction.cs" />
-    <Compile Remove="HttpTrigger\HttpTriggerBindedToCosmosDbFunction.cs" />
-    <Compile Remove="HttpTrigger\HttpTriggerPoolingFunction.cs" />
-    <Compile Remove="HttpTrigger\SayMyNameFunction.cs" />
+    <Compile Include="DurableFunctions\MyCustomDurableFunction.cs" />
+    <Compile Include="DurableFunctions\MyCustomWithTimerDurableFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />

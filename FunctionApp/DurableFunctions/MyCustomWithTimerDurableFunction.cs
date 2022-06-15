@@ -16,12 +16,14 @@ namespace FunctionApp.DurableFunctions
     public static class MyCustomWithTimerDurableFunction
     {
         private static int secondsToWait = 0;
+        
+        // Issue with http param bindings  https://stackoverflow.com/questions/64185565/failed-to-resolve-assembly-microsoft-aspnetcore-mvc-core-version-3-1-0-0-when
 
         [FunctionName(nameof(MyCustomWithTimerDurableFunction) + "_HttpStart")]
         public static async Task<HttpResponseMessage> HttpStart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "MyCustomWithTimerDurableFunction/{id:int}")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter,
-            [Bind("id")] int id,
+            /*[Bind("id")]*/ int id,
             ILogger log)
         {
             secondsToWait = id;
